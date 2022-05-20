@@ -6,13 +6,14 @@
       <hr class="w-full ml-2" />
     </div>
 
-    <div class="flex items-center justify-center">
+    <div class="flex flex-col gap-y-4 items-center justify-center">
       <a
         v-if="$page.props.socialstream.providers.includes('facebook')"
         :href="route('oauth.redirect', 'facebook')"
       >
-        <facebook-icon class="h-6 w-6 mx-2" />
+        <facebook-icon class="h-6 w-6 mx-2 float-left" />
         <span class="sr-only">Facebook</span>
+        Sign in with Facebook
       </a>
 
       <a

@@ -2,10 +2,12 @@
 import { Head, Link } from "@inertiajs/inertia-vue3";
 import RegisterModal from "../Components/RegisterModal.vue";
 import LoginModal from "../Components/LoginModal.vue";
+import ApplicationMark from "../Jetstream/ApplicationMark.vue";
 
 defineProps({
   canLogin: Boolean,
   canRegister: Boolean,
+  canResetPassword: Boolean,
   laravelVersion: String,
   phpVersion: String,
 });
@@ -13,25 +15,29 @@ defineProps({
 
 <template>
   <Head title="Welcome" />
-
-  <div
-    class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0"
-  >
-    <div v-if="canLogin" class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
-      <Link
-        v-if="$page.props.user"
-        :href="route('dashboard')"
-        class="text-sm text-gray-700 underline"
-      >
-        Dashboard
-      </Link>
+  <nav class="flex justify-between w-full px-6 py-4 bg-slate-500">
+    <ApplicationMark class="block h-9 w-auto"></ApplicationMark>
+    <div v-if="canLogin" class="flex justify-end">
+      <div v-if="$page.props.user">
+        <Link
+          v-if="$page.props.user"
+          :href="route('dashboard')"
+          class="text-sm text-gray-700 underline"
+        >
+          Dashboard
+        </Link>
+      </div>
 
       <template v-else>
         <LoginModal>Log In</LoginModal>
         <RegisterModal>Register</RegisterModal>
       </template>
     </div>
-  </div>
+  </nav>
+
+  <div
+    class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0"
+  ></div>
 </template>
 
 <style scoped>

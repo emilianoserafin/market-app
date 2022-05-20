@@ -134,15 +134,14 @@
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
-                          <Link
-                            :href="route('login')"
+                          <LoginModal
                             class="underline text-sm text-gray-600 hover:text-gray-900"
                           >
                             Already registered?
-                          </Link>
+                          </LoginModal>
                           <button
                             type="button"
-                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                             @click="open = false"
                             ref="cancelButtonRef"
                           >
@@ -179,7 +178,8 @@ import JetCheckbox from "@/Jetstream/Checkbox";
 import JetLabel from "@/Jetstream/Label";
 import JetValidationErrors from "@/Jetstream/ValidationErrors";
 import SocialstreamProviders from "@/Socialstream/Providers";
-import { Link } from "@inertiajs/inertia-vue3";
+import Link from "@inertiajs/inertia-vue3";
+import LoginModal from "./LoginModal.vue";
 
 export default {
   components: {
