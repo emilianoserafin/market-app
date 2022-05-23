@@ -50,5 +50,9 @@ return [
         // Features::generateMissingEmails(),
         Features::rememberSession(),
         Features::providerAvatars(),
+        Features::loginOnRegistration(),
+        Features::rememberSession(),
+        Features::createAccountOnFirstLogin(),
+        Features::providerAvatars(),
     ],
 ];

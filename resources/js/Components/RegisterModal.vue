@@ -2,7 +2,7 @@
 <template>
   <button
     type="button"
-    class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+    class="sm:text-white text-gray-700 text-left hover:bg-gray-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium mx-2"
     @click="open = true"
   >
     <slot />
@@ -35,9 +35,15 @@
             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <DialogPanel
-              class="relative bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full"
+              class="relative bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full mx-0"
             >
               <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <XIcon
+                  class="bg-red-500 h-7 w-7 float-right rounded-md -translate-y-4 translate-x-3 text-white cursor-pointer"
+                  @click="open = false"
+                  ref="cancelButtonRef"
+                >
+                </XIcon>
                 <div class="sm:flex sm:items-center">
                   <div class="mt-3 sm:mt-0 w-full">
                     <DialogTitle
@@ -134,19 +140,12 @@
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
-                          <LoginModal
+                          <div
                             class="underline text-sm text-gray-600 hover:text-gray-900"
                           >
                             Already registered?
-                          </LoginModal>
-                          <button
-                            type="button"
-                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                            @click="open = false"
-                            ref="cancelButtonRef"
-                          >
-                            Cancel
-                          </button>
+                          </div>
+
                           <jet-button
                             class="ml-4"
                             :class="{ 'opacity-25': form.processing }"
@@ -179,7 +178,7 @@ import JetLabel from "@/Jetstream/Label";
 import JetValidationErrors from "@/Jetstream/ValidationErrors";
 import SocialstreamProviders from "@/Socialstream/Providers";
 import Link from "@inertiajs/inertia-vue3";
-import LoginModal from "./LoginModal.vue";
+import { XIcon } from "@heroicons/vue/outline";
 
 export default {
   components: {
@@ -190,6 +189,7 @@ export default {
     JetValidationErrors,
     SocialstreamProviders,
     Link,
+    XIcon,
   },
 
   data() {

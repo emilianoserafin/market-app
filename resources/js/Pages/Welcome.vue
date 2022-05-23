@@ -1,8 +1,11 @@
 <script setup>
 import { Head, Link } from "@inertiajs/inertia-vue3";
+import { Inertia } from "@inertiajs/inertia";
 import RegisterModal from "../Components/RegisterModal.vue";
 import LoginModal from "../Components/LoginModal.vue";
-import ApplicationMark from "../Jetstream/ApplicationMark.vue";
+import Navbar from "../Components/Navbar.vue";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
+import { ChevronDownIcon } from "@heroicons/vue/solid";
 
 defineProps({
   canLogin: Boolean,
@@ -11,32 +14,120 @@ defineProps({
   laravelVersion: String,
   phpVersion: String,
 });
+
+const logout = () => {
+  Inertia.post(route("logout"));
+  location.reload();
+};
 </script>
 
 <template>
   <Head title="Welcome" />
-  <nav class="flex justify-between w-full px-6 py-4 bg-slate-500">
-    <ApplicationMark class="block h-9 w-auto"></ApplicationMark>
-    <div v-if="canLogin" class="flex justify-end">
-      <div v-if="$page.props.user">
-        <Link
-          v-if="$page.props.user"
-          :href="route('dashboard')"
-          class="text-sm text-gray-700 underline"
-        >
-          Dashboard
-        </Link>
+  <Navbar>
+    <template #right>
+      <div v-if="canLogin" class="hidden sm:flex">
+        <div v-if="$page.props.user" class="flex">
+          <Link
+            :href="route('dashboard')"
+            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
+          >
+            Dashboard
+          </Link>
+          <form @click="logout">
+            <Link
+              as="button"
+              class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
+            >
+              Log Out
+            </Link>
+          </form>
+        </div>
+
+        <div v-else>
+          <LoginModal>Log In</LoginModal>
+          <RegisterModal>Register</RegisterModal>
+        </div>
       </div>
 
-      <template v-else>
-        <LoginModal>Log In</LoginModal>
-        <RegisterModal>Register</RegisterModal>
-      </template>
-    </div>
-  </nav>
+      <Menu as="div" class="sm:hidden relative inline-block text-left">
+        <div>
+          <MenuButton
+            class="inline-flex justify-center w-full rounded-md border border-gray-500 shadow-sm px-4 py-2 bg-gray-700 text-sm font-medium text-white hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+          >
+            Account
+            <ChevronDownIcon class="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+          </MenuButton>
+        </div>
+
+        <transition
+          enter-active-class="transition ease-out duration-100"
+          enter-from-class="transform opacity-0 scale-95"
+          enter-to-class="transform opacity-100 scale-100"
+          leave-active-class="transition ease-in duration-75"
+          leave-from-class="transform opacity-100 scale-100"
+          leave-to-class="transform opacity-0 scale-95"
+        >
+          <MenuItems
+            v-if="canLogin"
+            class="z-10 origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none"
+          >
+            <div v-if="$page.props.user" class="py-1">
+              <MenuItem v-slot="{ active }">
+                <a
+                  :href="route('dashboard')"
+                  :class="[
+                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                    'block px-4 py-2 text-sm',
+                  ]"
+                  >Dashboard</a
+                >
+              </MenuItem>
+              <MenuItem v-slot="{ active }">
+                <form @click="logout">
+                  <Link
+                    as="button"
+                    :class="[
+                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                      'block px-4 py-2 text-sm',
+                    ]"
+                  >
+                    Log Out
+                  </Link>
+                </form>
+              </MenuItem>
+            </div>
+            <div v-else class="py-1 flex flex-col">
+              <MenuItem v-slot="{ active }">
+                <a
+                  :href="route('register')"
+                  :class="[
+                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                    'block px-4 py-2 text-sm',
+                  ]"
+                  >Register</a
+                >
+              </MenuItem>
+              <MenuItem v-slot="{ active }">
+                <a
+                  :href="route('login')"
+                  :class="[
+                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                    'block px-4 py-2 text-sm',
+                  ]"
+                  >Log In</a
+                >
+              </MenuItem>
+            </div>
+          </MenuItems>
+        </transition>
+      </Menu>
+    </template>
+    <!-- Login, Register, Dashboard access on Mobile -->
+    <template #accountOptions> </template>
+  </Navbar>
 
   <div
-    class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0"
+    class="relative flex items-top justify-center min-h-screen bg-gray-300 sm:items-center sm:pt-0"
   ></div>
 </template>
 
