@@ -29,14 +29,14 @@ const logout = () => {
         <div v-if="$page.props.user" class="flex">
           <Link
             :href="route('dashboard')"
-            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
+            class="text-white text-left hover:bg-gray-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium mx-2"
           >
             Dashboard
           </Link>
           <form @click="logout">
             <Link
               as="button"
-              class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
+              class="sm:text-white text-left hover:bg-gray-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium mx-2"
             >
               Log Out
             </Link>
@@ -75,10 +75,8 @@ const logout = () => {
               <MenuItem v-slot="{ active }">
                 <a
                   :href="route('dashboard')"
-                  :class="[
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm',
-                  ]"
+                  :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm']"
+                  class="text-left w-full text-gray-700"
                   >Dashboard</a
                 >
               </MenuItem>
@@ -86,10 +84,8 @@ const logout = () => {
                 <form @click="logout">
                   <Link
                     as="button"
-                    :class="[
-                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm',
-                    ]"
+                    :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm']"
+                    class="text-left w-full text-gray-700"
                   >
                     Log Out
                   </Link>
@@ -123,7 +119,7 @@ const logout = () => {
       </Menu>
     </template>
     <!-- Login, Register, Dashboard access on Mobile -->
-    <template #accountOptions> </template>
+    <template #accountOptions></template>
   </Navbar>
 
   <div

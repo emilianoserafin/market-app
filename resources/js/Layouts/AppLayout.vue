@@ -58,110 +58,99 @@ const logout = () => {
         <template #right>
           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
-              <div class="flex">
-                <!-- Logo -->
-                <!-- <div class="shrink-0 flex items-center">
-              <Link :href="route('dashboard')">
-                <JetApplicationMark class="block h-9 w-auto" />
-              </Link>
-            </div> -->
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                  <!-- Main Website Nav Goes Here -->
-                </div>
-              </div>
-
               <div class="hidden sm:flex sm:items-center sm:ml-6">
-                <div class="ml-3 relative">
-                  <!-- Teams Dropdown -->
-                  <JetDropdown
-                    v-if="$page.props.jetstream.hasTeamFeatures"
-                    align="right"
-                    width="60"
-                  >
-                    <template #trigger>
-                      <span class="inline-flex rounded-md">
-                        <button
-                          type="button"
-                          class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition"
-                        >
-                          {{ $page.props.user.current_team.name }}
-
-                          <svg
-                            class="ml-2 -mr-0.5 h-4 w-4"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
+                <div v-if="$page.props.user.role !== 'customer'">
+                  <div class="ml-3 relative">
+                    <!-- Teams Dropdown -->
+                    <JetDropdown
+                      v-if="$page.props.jetstream.hasTeamFeatures"
+                      align="right"
+                      width="60"
+                    >
+                      <template #trigger>
+                        <span class="inline-flex rounded-md">
+                          <button
+                            type="button"
+                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition"
                           >
-                            <path
-                              fill-rule="evenodd"
-                              d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                              clip-rule="evenodd"
-                            />
-                          </svg>
-                        </button>
-                      </span>
-                    </template>
+                            {{ $page.props.user.current_team.name }}
 
-                    <template #content>
-                      <div class="w-60">
-                        <!-- Team Management -->
-                        <template v-if="$page.props.jetstream.hasTeamFeatures">
-                          <div class="block px-4 py-2 text-xs text-gray-400">
-                            Manage Team
-                          </div>
+                            <svg
+                              class="ml-2 -mr-0.5 h-4 w-4"
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fill-rule="evenodd"
+                                d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                                clip-rule="evenodd"
+                              />
+                            </svg>
+                          </button>
+                        </span>
+                      </template>
 
-                          <!-- Team Settings -->
-                          <JetDropdownLink
-                            :href="route('teams.show', $page.props.user.current_team)"
-                          >
-                            Team Settings
-                          </JetDropdownLink>
+                      <template #content>
+                        <div class="w-60">
+                          <!-- Team Management -->
+                          <template v-if="$page.props.jetstream.hasTeamFeatures">
+                            <div class="block px-4 py-2 text-xs text-gray-400">
+                              Manage Team
+                            </div>
 
-                          <JetDropdownLink
-                            v-if="$page.props.jetstream.canCreateTeams"
-                            :href="route('teams.create')"
-                          >
-                            Create New Team
-                          </JetDropdownLink>
+                            <!-- Team Settings -->
+                            <JetDropdownLink
+                              :href="route('teams.show', $page.props.user.current_team)"
+                            >
+                              Team Settings
+                            </JetDropdownLink>
 
-                          <div class="border-t border-gray-100" />
+                            <JetDropdownLink
+                              v-if="$page.props.jetstream.canCreateTeams"
+                              :href="route('teams.create')"
+                            >
+                              Create New Team
+                            </JetDropdownLink>
 
-                          <!-- Team Switcher -->
-                          <div class="block px-4 py-2 text-xs text-gray-400">
-                            Switch Teams
-                          </div>
+                            <div class="border-t border-gray-100" />
 
-                          <template
-                            v-for="team in $page.props.user.all_teams"
-                            :key="team.id"
-                          >
-                            <form @submit.prevent="switchToTeam(team)">
-                              <JetDropdownLink as="button">
-                                <div class="flex items-center">
-                                  <svg
-                                    v-if="team.id == $page.props.user.current_team_id"
-                                    class="mr-2 h-5 w-5 text-green-400"
-                                    fill="none"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path
-                                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                    />
-                                  </svg>
-                                  <div>{{ team.name }}</div>
-                                </div>
-                              </JetDropdownLink>
-                            </form>
+                            <!-- Team Switcher -->
+                            <div class="block px-4 py-2 text-xs text-gray-400">
+                              Switch Teams
+                            </div>
+
+                            <template
+                              v-for="team in $page.props.user.all_teams"
+                              :key="team.id"
+                            >
+                              <form @submit.prevent="switchToTeam(team)">
+                                <JetDropdownLink as="button">
+                                  <div class="flex items-center">
+                                    <svg
+                                      v-if="team.id == $page.props.user.current_team_id"
+                                      class="mr-2 h-5 w-5 text-green-400"
+                                      fill="none"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                      />
+                                    </svg>
+                                    <div>{{ team.name }}</div>
+                                  </div>
+                                </JetDropdownLink>
+                              </form>
+                            </template>
                           </template>
-                        </template>
-                      </div>
-                    </template>
-                  </JetDropdown>
+                        </div>
+                      </template>
+                    </JetDropdown>
+                  </div>
                 </div>
 
                 <!-- Settings Dropdown -->
@@ -214,6 +203,7 @@ const logout = () => {
                       <JetDropdownLink :href="route('profile.show')">
                         Profile
                       </JetDropdownLink>
+                      <JetDropdownLink href="#"> Orders </JetDropdownLink>
 
                       <JetDropdownLink
                         v-if="$page.props.jetstream.hasApiFeatures"
@@ -307,62 +297,66 @@ const logout = () => {
               </form>
 
               <!-- Team Management -->
-              <template v-if="$page.props.jetstream.hasTeamFeatures">
-                <div class="border-t border-gray-200" />
+              <div v-if="$page.props.user.role !== 'customer'">
+                <template v-if="$page.props.jetstream.hasTeamFeatures">
+                  <div class="border-t border-gray-200" />
 
-                <Disclosure v-slot="{ open }">
-                  <DisclosureButton :class="mobileStyles">
-                    <span>Manage Team</span>
-                    <ChevronDownIcon
-                      :class="open ? 'rotate-180 transform' : ''"
-                      class="-mr-1 ml-2 h-5 w-5 inline"
-                    />
-                  </DisclosureButton>
-                  <!-- Team Settings -->
-                  <DisclosurePanel class="px-4 pt-4 pb-2 text-sm text-gray-500">
-                    <DisclosureButton
-                      as="a"
-                      :href="route('teams.show', $page.props.user.current_team)"
-                      :active="route().current('teams.show')"
-                      :class="mobileStyles"
-                    >
-                      Team Settings
+                  <Disclosure v-slot="{ open }">
+                    <DisclosureButton :class="mobileStyles">
+                      <span>Manage Team</span>
+                      <ChevronDownIcon
+                        :class="open ? 'rotate-180 transform' : ''"
+                        class="-mr-1 ml-2 h-5 w-5 inline"
+                      />
                     </DisclosureButton>
-                    <DisclosureButton
-                      v-if="$page.props.jetstream.canCreateTeams"
-                      as="a"
-                      :href="route('teams.create')"
-                      :active="route().current('teams.create')"
-                      :class="mobileStyles"
-                    >
-                      Create New Team
-                    </DisclosureButton>
-                    <!-- Team Switcher -->
-                    <div class="block px-4 py-2 text-xs text-gray-300">Switch Teams</div>
-                    <template v-for="team in $page.props.user.all_teams" :key="team.id">
-                      <form @submit.prevent="switchToTeam(team)">
-                        <JetResponsiveNavLink as="button">
-                          <div class="flex items-center ml-1">
-                            <svg
-                              v-if="team.id == $page.props.user.current_team_id"
-                              class="absolute mr-3 -ml-2 h-5 w-5 text-green-400"
-                              fill="none"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <div class="text-gray-300 ml-4">{{ team.name }}</div>
-                          </div>
-                        </JetResponsiveNavLink>
-                      </form>
-                    </template>
-                  </DisclosurePanel>
-                </Disclosure>
-              </template>
+                    <!-- Team Settings -->
+                    <DisclosurePanel class="px-4 pt-4 pb-2 text-sm text-gray-500">
+                      <DisclosureButton
+                        as="a"
+                        :href="route('teams.show', $page.props.user.current_team)"
+                        :active="route().current('teams.show')"
+                        :class="mobileStyles"
+                      >
+                        Team Settings
+                      </DisclosureButton>
+                      <DisclosureButton
+                        v-if="$page.props.jetstream.canCreateTeams"
+                        as="a"
+                        :href="route('teams.create')"
+                        :active="route().current('teams.create')"
+                        :class="mobileStyles"
+                      >
+                        Create New Team
+                      </DisclosureButton>
+                      <!-- Team Switcher -->
+                      <div class="block px-4 py-2 text-xs text-gray-300">
+                        Switch Teams
+                      </div>
+                      <template v-for="team in $page.props.user.all_teams" :key="team.id">
+                        <form @submit.prevent="switchToTeam(team)">
+                          <JetResponsiveNavLink as="button">
+                            <div class="flex items-center ml-1">
+                              <svg
+                                v-if="team.id == $page.props.user.current_team_id"
+                                class="absolute mr-3 -ml-2 h-5 w-5 text-green-400"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                              <div class="text-gray-300 ml-4">{{ team.name }}</div>
+                            </div>
+                          </JetResponsiveNavLink>
+                        </form>
+                      </template>
+                    </DisclosurePanel>
+                  </Disclosure>
+                </template>
+              </div>
             </div>
           </div>
         </template>

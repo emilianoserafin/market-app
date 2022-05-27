@@ -60,7 +60,7 @@
                       </MenuItem>
                       <MenuItem v-slot="{ active }">
                         <a
-                          href="#"
+                          href="/register-farm"
                           :class="[
                             active ? 'bg-gray-500 text-white' : 'text-gray-900',
                             'group flex w-full items-center rounded-md px-2 py-2 text-sm',

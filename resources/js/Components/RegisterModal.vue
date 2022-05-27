@@ -199,6 +199,7 @@ export default {
         email: "",
         password: "",
         password_confirmation: "",
+        role: "customer",
         terms: false,
       }),
     };

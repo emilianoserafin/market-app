@@ -24,12 +24,32 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+Route::get('/register-farm', function () {
+    return Inertia::render('Auth/RegisterStore', [
+        'canRegister' => Route::has('register-farm'),
+    ]);
 });
+
+Route::group(['middleware' => ['auth', 'verified']], function () {
+    Route::group(['middleware' => ['registration_completed']], function () {
+        Route::get('/dashboard', function () {
+            return Inertia::render('Dashboard');
+        })->name('dashboard');
+    });
+
+
+
+    Route::get('/register-farmstep2', [\App\Http\Controllers\RegisterStoreController::class, 'create'])->name('register-farm.create');
+    Route::post('/register-farmstep2', [\App\Http\Controllers\RegisterStoreController::class, 'store'])->name('register-farm.store');
+});
+
+
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified',
+// ])->group(function () {
+//     Route::get('/dashboard', function () {
+//         return Inertia::render('Dashboard');
+//     })->name('dashboard');
+// });

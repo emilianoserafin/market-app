@@ -44,6 +44,7 @@ class CreateUserFromProvider implements CreatesUserFromProvider
             return tap(User::create([
                 'name' => $providerUser->getName(),
                 'email' => $providerUser->getEmail(),
+                'role' => 'customer',
             ]), function (User $user) use ($provider, $providerUser) {
                 $user->markEmailAsVerified();
 
@@ -56,11 +57,14 @@ class CreateUserFromProvider implements CreatesUserFromProvider
                 $user->switchConnectedAccount(
                     $this->createsConnectedAccounts->create($user, $provider, $providerUser)
                 );
-
-                $this->createTeam($user);
+                if ($user->role !== 'customer') {
+                    $this->createTeam($user);
+                }
             });
         });
     }
+
+
 
     /**
      * Create a personal team for the user.
@@ -72,7 +76,7 @@ class CreateUserFromProvider implements CreatesUserFromProvider
     {
         $user->ownedTeams()->save(Team::forceCreate([
             'user_id' => $user->id,
-            'name' => explode(' ', $user->name, 2)[0]."'s Team",
+            'name' => explode(' ', $user->name, 2)[0] . "'s Team",
             'personal_team' => true,
         ]));
     }
