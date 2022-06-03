@@ -100,7 +100,7 @@
             <DisclosureButton as="a" href="#" :class="mobileStyles">
               Learn More
             </DisclosureButton>
-            <DisclosureButton as="a" href="#" :class="mobileStyles">
+            <DisclosureButton as="a" href="/register-farm" :class="mobileStyles">
               Register Your Farm
             </DisclosureButton>
           </DisclosurePanel>
